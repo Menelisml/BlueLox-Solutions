@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BlueLox Solutions</title>
+
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #e2e8f0;
+  --accent: #38bdf8;
+}
+
+.light {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #0f172a;
+  --accent: #0284c7;
+}
+
+body {
+  margin: 0;
+  font-family: Arial;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+  background: var(--card);
+  border-bottom: 2px solid #334155;
+}
+
+h1 { color: var(--accent); }
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.highlight {
+  grid-column: span 2;
+  text-align: center;
+}
+
+button {
+  padding: 10px;
+  margin-top: 10px;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+button:hover { opacity: 0.8; }
+
+input, textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+.ticket {
+  background: #0b1220;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.loader {
+  border: 4px solid #ccc;
+  border-top: 4px solid var(--accent);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+a.btn {
+  background: green;
+  padding: 10px;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>BlueLox Solutions</h1>
+  <p>IT Support • API Integration • Freelance Tech Services</p>
+
+  <div class="topbar">
+    <button onclick="toggleTheme()">🌙 Toggle Theme</button>
+    <a class="btn" href="https://wa.me/353000000000" target="_blank">💬 WhatsApp Me</a>
+  </div>
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+  <div class="card">
+    <h2>About Me</h2>
+    <p>Providing technical support for small & medium businesses with fast issue resolution and API-based solutions.</p>
+  </div>
+
+  <div class="card">
+    <h2>Services</h2>
+    <ul>
+      <li>IT Support</li>
+      <li>API Integration</li>
+      <li>Automation</li>
+      <li>Web Development</li>
+    </ul>
+  </div>
+
+  <div class="card highlight">
+    <h2>Live System Dashboard</h2>
+
+    <p>🌦️ Dublin Weather: <span id="weather"><span class="loader"></span></span></p>
+    <p>😂 Joke:</p>
+    <p id="joke"><span class="loader"></span></p>
+
+    <button onclick="loadData()">Refresh</button>
+  </div>
+
+  <div class="card">
+    <h2>Submit Support Ticket</h2>
+
+    <input id="name" placeholder="Your Name"/>
+    <textarea id="issue" placeholder="Describe Issue"></textarea>
+
+    <button onclick="addTicket()">Submit Ticket</button>
+
+    <div id="tickets"></div>
+  </div>
+
+  <div class="card">
+    <h2>Contact Me</h2>
+
+    <input placeholder="Email" id="email"/>
+    <textarea placeholder="Message" id="message"></textarea>
+
+    <button onclick="sendEmail()">Send</button>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+const lat = 53.3498;
+const lon = -6.2603;
+
+// THEME
+function toggleTheme() {
+  document.body.classList.toggle("light");
+}
+
+// WEATHER
+async function getWeather() {
+  const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+  const data = await res.json();
+  document.getElementById("weather").innerText =
+    `${data.current_weather.temperature}°C, Wind ${data.current_weather.windspeed} km/h`;
+}
+
+// JOKE
+async function getJoke() {
+  const res = await fetch("https://api.chucknorris.io/jokes/random");
+  const data = await res.json();
+  document.getElementById("joke").innerText = data.value;
+}
+
+// LOAD ALL
+function loadData() {
+  getWeather();
+  getJoke();
+}
+
+// TICKETS
+function addTicket() {
+  const name = document.getElementById("name").value;
+  const issue = document.getElementById("issue").value;
+
+  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+  tickets.push({ name, issue });
+
+  localStorage.setItem("tickets", JSON.stringify(tickets));
+  renderTickets();
+}
+
+function renderTickets() {
+  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+  document.getElementById("tickets").innerHTML =
+    tickets.map(t =>
+      `<div class="ticket"><b>${t.name}</b><br>${t.issue}</div>`
+    ).join("");
+}
+
+// EMAIL (simple mailto)
+function sendEmail() {
+  const email = document.getElementById("email").value;
+  const msg = document.getElementById("message").value;
+
+  window.location.href =
+    `mailto:${email}?subject=BlueLox Support&body=${msg}`;
+}
+
+// INIT
+loadData();
+renderTickets();
+</script>
+
+</body>
+</html>
