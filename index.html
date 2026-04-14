@@ -7,52 +7,84 @@
 
 <style>
 :root {
-  --bg: #0f172a;
-  --card: #1e293b;
+  --bg: #0b1220;
+  --card: rgba(30, 41, 59, 0.85);
   --text: #e2e8f0;
   --accent: #38bdf8;
+  --muted: #94a3b8;
+  --shadow: rgba(0,0,0,0.35);
 }
 
 .light {
-  --bg: #f1f5f9;
-  --card: #ffffff;
+  --bg: #f5f7fb;
+  --card: rgba(255, 255, 255, 0.9);
   --text: #0f172a;
   --accent: #0284c7;
+  --muted: #475569;
+  --shadow: rgba(0,0,0,0.08);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: Arial;
+  font-family: "Segoe UI", system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  line-height: 1.6;
 }
 
+/* HEADER */
 header {
-  padding: 20px;
+  padding: 40px 20px 20px;
   text-align: center;
   background: var(--card);
-  border-bottom: 2px solid #334155;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(148,163,184,0.2);
 }
 
-h1 { color: var(--accent); }
+h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: -0.5px;
+  color: var(--accent);
+}
 
+header p {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+/* LAYOUT */
 .container {
-  max-width: 1000px;
+  max-width: 1050px;
   margin: auto;
-  padding: 20px;
+  padding: 30px 20px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
 }
 
+/* CARDS */
 .card {
   background: var(--card);
-  padding: 20px;
-  border-radius: 12px;
+  border: 1px solid rgba(148,163,184,0.15);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 10px 30px var(--shadow);
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px var(--shadow);
 }
 
 .highlight {
@@ -60,59 +92,76 @@ h1 { color: var(--accent); }
   text-align: center;
 }
 
+/* BUTTONS */
 button {
-  padding: 10px;
-  margin-top: 10px;
+  padding: 10px 16px;
+  margin-top: 12px;
   background: var(--accent);
+  color: #000;
   border: none;
+  border-radius: 10px;
   cursor: pointer;
-  border-radius: 8px;
-  font-weight: bold;
+  font-weight: 600;
+  transition: 0.2s ease;
 }
 
-button:hover { opacity: 0.8; }
-
-input, textarea {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
+button:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
 }
 
-.ticket {
-  background: #0b1220;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
-}
-
-.loader {
-  border: 4px solid #ccc;
-  border-top: 4px solid var(--accent);
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 1s linear infinite;
+a.btn {
   display: inline-block;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #16a34a;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+a.btn:hover {
+  transform: scale(1.03);
+}
+
+/* LOADER */
+.loader {
+  border: 3px solid rgba(148,163,184,0.3);
+  border-top: 3px solid var(--accent);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
   100% { transform: rotate(360deg); }
 }
 
+/* TOP BAR */
 .topbar {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
 }
 
-a.btn {
-  background: green;
-  padding: 10px;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .highlight {
+    grid-column: span 1;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
 }
 </style>
 </head>
@@ -121,11 +170,17 @@ a.btn {
 
 <header>
   <h1>BlueLox Solutions</h1>
-  <p>IT Support • API Integration • Freelance Tech Services</p>
+  <p>IT Support • API Integration • Freelance Technical Services</p>
 
   <div class="topbar">
     <button onclick="toggleTheme()">🌙 Toggle Theme</button>
-    <a class="btn" href="https://wa.me/353000000000" target="_blank">💬 WhatsApp Me</a>
+
+    <!-- WhatsApp -->
+    <a class="btn"
+       href="https://wa.me/353874752441"
+       target="_blank">
+       💬 WhatsApp Me
+    </a>
   </div>
 </header>
 
@@ -133,49 +188,47 @@ a.btn {
 
 <div class="grid">
 
+  <!-- ABOUT -->
   <div class="card">
     <h2>About Me</h2>
-    <p>Providing technical support for small & medium businesses with fast issue resolution and API-based solutions.</p>
+    <p>
+      I provide technical support for small and medium businesses,
+      helping resolve software, network, and system issues efficiently.
+    </p>
   </div>
 
+  <!-- SERVICES -->
   <div class="card">
     <h2>Services</h2>
     <ul>
-      <li>IT Support</li>
-      <li>API Integration</li>
-      <li>Automation</li>
-      <li>Web Development</li>
+      <li>IT Support (Remote Assistance)</li>
+      <li>API Integration & Automation</li>
+      <li>Basic Web Development</li>
+      <li>System Troubleshooting</li>
     </ul>
   </div>
 
+  <!-- LIVE DASHBOARD -->
   <div class="card highlight">
-    <h2>Live System Dashboard</h2>
+    <h2>Live Dashboard</h2>
 
     <p>🌦️ Dublin Weather: <span id="weather"><span class="loader"></span></span></p>
-    <p>😂 Joke:</p>
+    <p>😂 Joke of the Day:</p>
     <p id="joke"><span class="loader"></span></p>
 
-    <button onclick="loadData()">Refresh</button>
+    <button onclick="loadData()">Refresh Data</button>
   </div>
 
-  <div class="card">
-    <h2>Submit Support Ticket</h2>
-
-    <input id="name" placeholder="Your Name"/>
-    <textarea id="issue" placeholder="Describe Issue"></textarea>
-
-    <button onclick="addTicket()">Submit Ticket</button>
-
-    <div id="tickets"></div>
-  </div>
-
+  <!-- CONTACT -->
   <div class="card">
     <h2>Contact Me</h2>
 
-    <input placeholder="Email" id="email"/>
-    <textarea placeholder="Message" id="message"></textarea>
+    <p>Send me an email for support or freelance work:</p>
 
-    <button onclick="sendEmail()">Send</button>
+    <a class="btn"
+       href="mailto:menelislesego@gmail.com?subject=BlueLox%20Support%20Request&body=Hello%20BlueLox%20Solutions,%0A%0AI%20need%20help%20with...">
+       📩 Send Email
+    </a>
   </div>
 
 </div>
@@ -186,64 +239,45 @@ a.btn {
 const lat = 53.3498;
 const lon = -6.2603;
 
-// THEME
+// THEME TOGGLE
 function toggleTheme() {
   document.body.classList.toggle("light");
 }
 
-// WEATHER
+// WEATHER API (Dublin)
 async function getWeather() {
-  const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-  const data = await res.json();
-  document.getElementById("weather").innerText =
-    `${data.current_weather.temperature}°C, Wind ${data.current_weather.windspeed} km/h`;
+  try {
+    const res = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
+    );
+    const data = await res.json();
+
+    document.getElementById("weather").innerText =
+      `${data.current_weather.temperature}°C, Wind ${data.current_weather.windspeed} km/h`;
+  } catch {
+    document.getElementById("weather").innerText = "Unavailable";
+  }
 }
 
-// JOKE
+// JOKE API
 async function getJoke() {
-  const res = await fetch("https://api.chucknorris.io/jokes/random");
-  const data = await res.json();
-  document.getElementById("joke").innerText = data.value;
+  try {
+    const res = await fetch("https://api.chucknorris.io/jokes/random");
+    const data = await res.json();
+
+    document.getElementById("joke").innerText = data.value;
+  } catch {
+    document.getElementById("joke").innerText = "Unavailable";
+  }
 }
 
-// LOAD ALL
+// LOAD ALL DATA
 function loadData() {
   getWeather();
   getJoke();
 }
 
-// TICKETS
-function addTicket() {
-  const name = document.getElementById("name").value;
-  const issue = document.getElementById("issue").value;
-
-  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
-  tickets.push({ name, issue });
-
-  localStorage.setItem("tickets", JSON.stringify(tickets));
-  renderTickets();
-}
-
-function renderTickets() {
-  let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
-  document.getElementById("tickets").innerHTML =
-    tickets.map(t =>
-      `<div class="ticket"><b>${t.name}</b><br>${t.issue}</div>`
-    ).join("");
-}
-
-// EMAIL (simple mailto)
-function sendEmail() {
-  const email = document.getElementById("email").value;
-  const msg = document.getElementById("message").value;
-
-  window.location.href =
-    `mailto:${email}?subject=BlueLox Support&body=${msg}`;
-}
-
-// INIT
 loadData();
-renderTickets();
 </script>
 
 </body>
