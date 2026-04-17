@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlueLox Solutions | B2B Support Dashboard</title>
+    <style>
+        :root {
+            --primary: #0052FF;
+            --dark: #1a1a1a;
+            --light: #f4f7f6;
+            --walkme-blue: #00B4FF;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--light); }
+        
+        /* Navigation */
+        nav { background: var(--dark); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: bold; font-size: 1.5rem; color: var(--walkme-blue); }
+        
+        /* Dashboard Layout */
+        .container { padding: 2rem; max-width: 1000px; margin: auto; }
+        .header { margin-bottom: 2rem; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* Action Buttons */
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .btn-outline { border: 2px solid var(--primary); background: transparent; padding: 8px 18px; border-radius: 5px; cursor: pointer; }
+
+        /* Simulated WalkMe Tooltip */
+        .walkme-tooltip {
+            position: absolute;
+            background: white;
+            border-top: 5px solid var(--walkme-blue);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 4px;
+            width: 250px;
+            z-index: 9999;
+            display: none; /* Hidden by default */
+        }
+        .walkme-tooltip h4 { margin-top: 0; color: var(--dark); }
+        .walkme-tooltip button { background: var(--walkme-blue); border: none; color: white; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+        .arrow { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid white; position: absolute; top: -10px; left: 20px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">BlueLox Solutions</div>
+        <div>
+            <button class="btn-outline" style="color:white; border-color:white" id="helpButton">Get Help</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to the Support Portal</h1>
+            <p>Manage your B2B SaaS tickets and client health scores.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="card" id="activeTickets">
+                <h3>Active Tickets</h3>
+                <h2 style="color: var(--primary);">24</h2>
+            </div>
+            <div class="card" id="clientHealth">
+                <h3>Client Health</h3>
+                <h2 style="color: #27ae60;">98%</h2>
+            </div>
+            <div class="card">
+                <h3>Pending API Syncs</h3>
+                <h2 id="apiCounter">5</h2>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Quick Actions</h3>
+            <button class="btn-primary" id="newTicketBtn">Create New Ticket</button>
+            <button class="btn-outline" id="exportData">Export CSV</button>
+        </div>
+    </div>
+
+    <div id="walkmeStep1" class="walkme-tooltip">
+        <div class="arrow"></div>
+        <h4>New Feature! 🚀</h4>
+        <p>You can now track active B2B tickets in real-time from this card.</p>
+        <button onclick="closeTooltip()">Got it!</button>
+    </div>
+
+    <script>
+        // WalkMe Simulation Logic
+        const helpBtn = document.getElementById('helpButton');
+        const tooltip = document.getElementById('walkmeStep1');
+        const target = document.getElementById('activeTickets');
+
+        helpBtn.addEventListener('click', () => {
+            // Logic to position tooltip near the "Active Tickets" card
+            const rect = target.getBoundingClientRect();
+            tooltip.style.display = 'block';
+            tooltip.style.top = (rect.bottom + 15) + 'px';
+            tooltip.style.left = rect.left + 'px';
+        });
+
+        function closeTooltip() {
+            tooltip.style.display = 'none';
+        }
+
+        // Simulating a dynamic change (Common Interview Scenario)
+        document.getElementById('newTicketBtn').addEventListener('click', () => {
+            alert("Ticket created! Logic Check: Is the selector still valid?");
+        });
+    </script>
+</body>
+</html>
